@@ -23,7 +23,7 @@ export class UsuarioController {
     @service(SeguridadUsuarioService)
     public servicioSeguridad: SeguridadUsuarioService,
     @repository(LoginRepository)
-    public repositorioLogin: LoginRepository
+    public respositorioLogin: LoginRepository
   ) { }
 
   @post('/usuario')
@@ -181,14 +181,16 @@ export class UsuarioController {
     if (usuario) {
       let codigo2fa = this.servicioSeguridad.crearTextoAleatorio(5);
       let login: Login = new Login();
+      login.usuarioId = usuario._id!;
       login.codigo2fa = codigo2fa;
       login.estadoCodigo2fa = false;
       login.token = "";
       login.estadoToken = false;
-      this.repositorioLogin.save(login);
+      this.respositorioLogin.create(login);
+      // notificar al usuario vía correo o sms
       return usuario;
     }
-    return new HttpErrors[401]("Credenciales incorrectas");
+    return new HttpErrors[401]("Credenciales incorrectas.");
   }
 
 }

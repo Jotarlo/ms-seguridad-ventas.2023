@@ -10,7 +10,9 @@ export class SeguridadUsuarioService {
   constructor(
     @repository(UsuarioRepository)
     public repositorioUsuario: UsuarioRepository
-  ) { }
+  ) {
+
+  }
 
   /**
    * Crear una clave aleatoria
