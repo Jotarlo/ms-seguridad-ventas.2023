@@ -180,6 +180,7 @@ export class UsuarioController {
     let usuario = await this.servicioSeguridad.identificarUsuario(credenciales);
     if (usuario) {
       let codigo2fa = this.servicioSeguridad.crearTextoAleatorio(5);
+      console.log(codigo2fa);
       let login: Login = new Login();
       login.usuarioId = usuario._id!;
       login.codigo2fa = codigo2fa;
@@ -187,6 +188,7 @@ export class UsuarioController {
       login.token = "";
       login.estadoToken = false;
       this.respositorioLogin.create(login);
+      usuario.clave = "";
       // notificar al usuario vía correo o sms
       return usuario;
     }
@@ -215,6 +217,18 @@ export class UsuarioController {
       let token = this.servicioSeguridad.crearToken(usuario);
       if (usuario) {
         usuario.clave = "";
+        try {
+          let login = await this.respositorioLogin.findOne({
+            where: {
+              usuarioId: usuario._id,
+              estadoCodigo2fa: false
+            }
+          });
+          login!.estadoCodigo2fa = true;
+          this.respositorioLogin.updateById(login?._id, login!);
+        } catch {
+          console.log("No se ha almacenado el cambio del estado de token en la base de datos.")
+        }
         return {
           user: usuario,
           token: token
