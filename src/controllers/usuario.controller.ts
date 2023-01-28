@@ -26,6 +26,7 @@ export class UsuarioController {
     public respositorioLogin: LoginRepository
   ) { }
 
+
   @post('/usuario')
   @response(200, {
     description: 'Usuario model instance',
@@ -218,14 +219,13 @@ export class UsuarioController {
       if (usuario) {
         usuario.clave = "";
         try {
-          let login = await this.respositorioLogin.findOne({
-            where: {
-              usuarioId: usuario._id,
+          this.usuarioRepository.logins(usuario._id).patch(
+            {
+              estadoCodigo2fa: true
+            },
+            {
               estadoCodigo2fa: false
-            }
-          });
-          login!.estadoCodigo2fa = true;
-          this.respositorioLogin.updateById(login?._id, login!);
+            });
         } catch {
           console.log("No se ha almacenado el cambio del estado de token en la base de datos.")
         }
