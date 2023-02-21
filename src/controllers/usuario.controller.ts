@@ -223,7 +223,8 @@ export class UsuarioController {
         try {
           this.usuarioRepository.logins(usuario._id).patch(
             {
-              estadoCodigo2fa: true
+              estadoCodigo2fa: true,
+              token: token
             },
             {
               estadoCodigo2fa: false
@@ -239,5 +240,4 @@ export class UsuarioController {
     }
     return new HttpErrors[401]("Código de 2fa inválido para el usuario definido.");
   }
-
 }
