@@ -1,5 +1,5 @@
 export namespace ConfiguracionNotificaciones {
-  export const asunto2fa: string = "Código de Verificación";
+  export const asunto2fa: string = "Código de Verificación - 2FA";
   export const asuntoVerificacionCorreo: string = "Verificación de correo";
   export const claveAsignada: string = "Asignación de Clave";
   export const urlNotificaciones2fa: string = "http://localhost:5187/Notificaciones/enviar-correo-2fa";
